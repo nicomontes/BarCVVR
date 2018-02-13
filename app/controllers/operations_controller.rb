@@ -62,6 +62,7 @@ class OperationsController < ApplicationController
   # PATCH/PUT /operations/1
   # PATCH/PUT /operations/1.json
   def update
+    if params[:admin_password] == ENV["ADMIN_PASSWORD"]
       if params[:op][:delete] == "yes"
         @operation.destroy
         respond_to do |format|
@@ -78,6 +79,9 @@ class OperationsController < ApplicationController
           end
         end
       end
+    else
+      redirect_back fallback_location:  ""
+    end
   end
 
   # DELETE /operations/1

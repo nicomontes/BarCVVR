@@ -49,10 +49,15 @@
     <%= f.text_field :comment %>
   </div>
   
+  <div class="input-field col s12 l7">
+    <%= f.label :admin_password, 'Mot de passe Administrateur' %>
+    <%= password_field_tag :admin_password, nil %>
+  </div>
+  
   <div class="col s12">
     <br>
       <%= check_box("op", "delete", { class: "" }, "yes", "no") %>
-      <label for="op_delete">Supprimer la boisson</label>
+      <label for="op_delete">Supprimer l'opération</label>
   </div>
   
   <br/>
