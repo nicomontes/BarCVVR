@@ -24,6 +24,13 @@ class OperationsController < ApplicationController
     @operation = Operation.new
     @operation.user_id=params[:userid]
   end
+  
+  # GET /operations/exchange
+  def exchange
+    @operation = Operation.new
+    @operation.user_id=params[:userid]
+    @users = User.all.order(lastName: :asc)
+  end
 
   # GET /operations/1/edit
   def edit
@@ -33,28 +40,43 @@ class OperationsController < ApplicationController
   # POST /operations
   # POST /operations.json
   def create
-    if params[:post]
-      drink_id = params[:post][:drink]
-      drink_price = Drink.find(drink_id).price.to_f
-      sum = 0 - operation_params[:numberDrink].to_f * drink_price
-    else
-      sum = operation_params[:sum].to_f
-    end
-    @operation = Operation.new(operation_params.merge(sum: sum, drink_id: drink_id))
-    respond_to do |format|
-      if @operation.save
-        amount = User.find(operation_params[:user_id]).amount
-        Operation.where(user_id: operation_params[:user_id]).find_each do |operation|
-          amount = amount + operation.sum
+    if params[:post_exchange_user]
+      sum = 0 - operation_params[:sum].to_f
+      @operation1 = Operation.new(operation_params.merge(sum: sum))
+      @operation2 = Operation.new(operation_params.merge(sum: operation_params[:sum].to_f, user_id: params[:post_exchange_user]))
+      respond_to do |format|
+        if @operation1.save && @operation2.save
+          format.html { redirect_to User, notice: "Opération prise en compte !"}
+          format.json { render :show, status: :created, location: @operation }
+        else
+          format.html { render :exchange }
+          format.json { render json: @operation.errors, status: :unprocessable_entity }
         end
-        if amount < 0
-          UserNotifierMailer.send_negative_email(User.find(operation_params[:user_id])).deliver
-        end
-        format.html { redirect_to User, notice: "Opération prise en compte !"}
-        format.json { render :show, status: :created, location: @operation }
+      end
+    else  
+      if params[:post]
+        drink_id = params[:post][:drink]
+        drink_price = Drink.find(drink_id).price.to_f
+        sum = 0 - operation_params[:numberDrink].to_f * drink_price
       else
-        format.html { render :new }
-        format.json { render json: @operation.errors, status: :unprocessable_entity }
+        sum = operation_params[:sum].to_f
+      end
+      @operation = Operation.new(operation_params.merge(sum: sum, drink_id: drink_id))
+      respond_to do |format|
+        if @operation.save
+          amount = User.find(operation_params[:user_id]).amount
+          Operation.where(user_id: operation_params[:user_id]).find_each do |operation|
+            amount = amount + operation.sum
+          end
+          if amount < 0
+            UserNotifierMailer.send_negative_email(User.find(operation_params[:user_id])).deliver
+          end
+          format.html { redirect_to User, notice: "Opération prise en compte !"}
+          format.json { render :show, status: :created, location: @operation }
+        else
+          format.html { render :new }
+          format.json { render json: @operation.errors, status: :unprocessable_entity }
+        end
       end
     end
   end

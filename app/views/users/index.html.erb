@@ -25,7 +25,7 @@
       <th>Prénom</th>
       <th>Surnom</th>
       <th>Compte</th>
-      <th colspan="3"> Total : <%= number_with_precision(@totalAmount, precision: 2).sub(/\.00$/,'') %>€ </th>
+      <th colspan="4"> Total : <%= number_with_precision(@totalAmount, precision: 2).sub(/\.00$/,'') %>€ </th>
     </tr>
   </thead>
 
@@ -73,6 +73,11 @@
         <td>
           <button class="btn-floating waves-effect light-blue tooltipped" data-position="bottom" data-delay="1000" data-tooltip="Renflouer <%= @users.find(key).firstName %>" onclick="window.location.href='/operations/add?userid=<%=@users.find(key).id%>'">
             <i class="material-icons">euro_symbol</i>
+          </button>
+        </td>
+        <td>
+          <button class="btn-floating waves-effect red tooltipped" data-position="bottom" data-delay="1000" data-tooltip="Echange <%= @users.find(key).firstName %>" onclick="window.location.href='/operations/exchange?userid=<%=@users.find(key).id%>'">
+            <i class="material-icons">compare_arrows</i>
           </button>
         </td>
       </tr>
