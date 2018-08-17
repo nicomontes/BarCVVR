@@ -135,12 +135,12 @@
     <% @lastSpending.each do |op| 
       if op.sum > 0
       %>
-      <%= content_tag(:p, op.date.strftime("%d/%m/%Y %I:%M") + " : " + op.comment.to_s + ", " + op.sum.to_s) %>
+      <%= content_tag(:p, op.date.getlocal.strftime("%d/%m/%Y %H:%M") + " : " + op.comment.to_s + ", " + op.sum.to_s) %>
       <%
     elsif op.drink_id
     %>
       
-      <%= content_tag(:p, op.date.strftime("%d/%m/%Y %I:%M") + " : " + Drink.find(op.drink_id).name + ", " + op.sum.to_s) %>
+      <%= content_tag(:p, op.date.getlocal.strftime("%d/%m/%Y %H:%M") + " : " + Drink.find(op.drink_id).name + ", " + op.sum.to_s) %>
     
     <%
       end
