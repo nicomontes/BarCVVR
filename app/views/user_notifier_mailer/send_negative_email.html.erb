@@ -131,7 +131,7 @@
 </tr>
 </table><table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0"  width="100%" style="table-layout: fixed;" data-attributes='%7B%22dropped%22%3Atrue%2C%22child%22%3Afalse%2C%22padding%22%3A%2234%2C5%2C34%2C5%22%2C%22containerbackground%22%3A%22%23ffffff%22%7D'>
 <tr>
-  <td role="module-content"  valign="top" height="100%" style="padding: 34px 5px 34px 5px;" bgcolor="#ffffff"><h2 style="text-align: center;"><span style="font-size:24px;">Salut <%= @user.firstName %>,</span></h2>  <div style="text-align: center;"> <p>Ton compte bar est en n&eacute;gatif de <%= @user.amount %>€ !</p>  <p>Paye vite avant que le tr&eacute;sorier te tombe dessus ! </p>  <p>&nbsp;</p>  <p>Tes 5 derni&egrave;res d&eacute;penses sont les suivantes :</p>
+  <td role="module-content"  valign="top" height="100%" style="padding: 34px 5px 34px 5px;" bgcolor="#ffffff"><h2 style="text-align: center;"><span style="font-size:24px;">Salut <%= @user.firstName %>,</span></h2>  <div style="text-align: center;"> <p>Ton compte bar est en n&eacute;gatif de <%= @user.amount %>€ !</p>  <p>Paye vite avant que le tr&eacute;sorier te tombe dessus ! </p>  <p>&nbsp;</p>  <p>Tes 10 derni&egrave;res d&eacute;penses sont les suivantes :</p>
     <% @lastSpending.each do |op| 
       if op.sum > 0
       %>

@@ -19,7 +19,7 @@ class UserNotifierMailer < ApplicationMailer
   # send a negative email to the user, pass in the user object that contains the user's email address and password
   def send_negative_email(user)
     @user = user
-    @lastSpending = Operation.where(user_id: @user.id).order(date: :desc).limit(5)
+    @lastSpending = Operation.where(user_id: @user.id).order(date: :desc).limit(10)
     @operations = Operation.where(user_id: @user.id).order("date DESC")
     Operation.where(user_id: @user.id).find_each do |operation|
       @user.amount = @user.amount + operation.sum
