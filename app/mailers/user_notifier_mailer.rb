@@ -20,6 +20,10 @@ class UserNotifierMailer < ApplicationMailer
   def send_negative_email(user)
     @user = user
     @lastSpending = Operation.where(user_id: @user.id).order(date: :desc).limit(5)
+    @operations = Operation.where(user_id: @user.id).order("date DESC")
+    Operation.where(user_id: @user.id).find_each do |operation|
+      @user.amount = @user.amount + operation.sum
+    end
     mail( :to => @user.email,
     :subject => 'Compte bar en négatif !' )
   end
@@ -71,4 +75,15 @@ class UserNotifierMailer < ApplicationMailer
       end
     end
   end
+  
+  private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_user
+      @user = User.find(params[:id])
+    end
+
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def user_params
+      params.require(:user).permit(:firstName, :lastName, :alias, :password_digest, :initAmount, :amount, :email)
+    end
 end
