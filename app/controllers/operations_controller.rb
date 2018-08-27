@@ -35,6 +35,11 @@ class OperationsController < ApplicationController
   # GET /operations/1/edit
   def edit
     @userid = params[:userid]
+    amount = User.find(@userid).initAmount
+    Operation.where(user_id: @userid).find_each do |operation|
+      amount = amount + operation.sum
+    end
+    User.find(@userid).update_attribute(:amount, amount)
   end
 
   # POST /operations
@@ -46,6 +51,16 @@ class OperationsController < ApplicationController
       @operation2 = Operation.new(operation_params.merge(sum: operation_params[:sum].to_f, user_id: params[:post_exchange_user]))
       respond_to do |format|
         if @operation1.save && @operation2.save
+          amount = User.find(@operation1.user_id).initAmount
+          Operation.where(user_id: @operation1.user_id).find_each do |operation|
+            amount = amount + operation.sum
+          end
+          User.find(@operation1.user_id).update_attribute(:amount, amount)
+          amount = User.find(@operation2.user_id).initAmount
+          Operation.where(user_id: @operation2.user_id).find_each do |operation|
+            amount = amount + operation.sum
+          end
+          User.find(@operation2.user_id).update_attribute(:amount, amount)
           format.html { redirect_to User, notice: "Opération prise en compte !"}
           format.json { render :show, status: :created, location: @operation }
         else
@@ -64,10 +79,11 @@ class OperationsController < ApplicationController
       @operation = Operation.new(operation_params.merge(sum: sum, drink_id: drink_id))
       respond_to do |format|
         if @operation.save
-          amount = User.find(operation_params[:user_id]).amount
+          amount = User.find(operation_params[:user_id]).initAmount
           Operation.where(user_id: operation_params[:user_id]).find_each do |operation|
             amount = amount + operation.sum
           end
+          User.find(operation_params[:user_id]).update_attribute(:amount, amount)
           if amount < 0
             UserNotifierMailer.send_negative_email(User.find(operation_params[:user_id])).deliver
           end
@@ -87,12 +103,22 @@ class OperationsController < ApplicationController
     if params[:admin_password] == ENV["ADMIN_PASSWORD"]
       if params[:op][:delete] == "yes"
         @operation.destroy
+        amount = User.find(operation_params[:user_id]).initAmount
+        Operation.where(user_id: operation_params[:user_id]).find_each do |operation|
+          amount = amount + operation.sum
+        end
+        User.find(operation_params[:user_id]).update_attribute(:amount, amount)
         respond_to do |format|
           format.html { redirect_to Operation, notice: "L'opération a bien été supprimée." }
         end
       else
         respond_to do |format|
           if @operation.update(operation_params)
+            amount = User.find(operation_params[:user_id]).initAmount
+            Operation.where(user_id: operation_params[:user_id]).find_each do |operation|
+              amount = amount + operation.sum
+            end
+            User.find(operation_params[:user_id]).update_attribute(:amount, amount)
             format.html { redirect_to Operation, notice: "L'opération a bien été mise à jour." }
             format.json { render :show, status: :ok, location: @operation }
           else
@@ -111,6 +137,11 @@ class OperationsController < ApplicationController
   def destroy
     if params[:admin_password] == ENV["ADMIN_PASSWORD"]
       @operation.destroy
+      amount = User.find(operation_params[:user_id]).initAmount
+      Operation.where(user_id: operation_params[:user_id]).find_each do |operation|
+        amount = amount + operation.sum
+      end
+      User.find(operation_params[:user_id]).update_attribute(:amount, amount)
       respond_to do |format|
         format.html { redirect_to Operation, notice: "L'opération a bien été supprimée." }
         format.json { head :no_content }
