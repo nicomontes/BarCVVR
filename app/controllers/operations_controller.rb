@@ -35,11 +35,6 @@ class OperationsController < ApplicationController
   # GET /operations/1/edit
   def edit
     @userid = params[:userid]
-    amount = User.find(@userid).initAmount
-    Operation.where(user_id: @userid).find_each do |operation|
-      amount = amount + operation.sum
-    end
-    User.find(@userid).update_attribute(:amount, amount)
   end
 
   # POST /operations
