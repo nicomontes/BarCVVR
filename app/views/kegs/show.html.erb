@@ -30,15 +30,4 @@
 <% if notice %>
 Materialize.toast('<%= notice %>', 4000) // 4000 is the duration of the toast
 <% end %>
-
-table = document.getElementById("Table");
-tr = table.getElementsByTagName("tr");
-for (i = tr.length -1; tr[i]; i--) {
-  td = tr[i].getElementsByTagName("td")[1];
-  date = new Date(/^([0-9\-\s\:]+UTC)/.exec(td.innerHTML)[0]);
-  td.innerHTML = date.toLocaleString();
-  td = tr[i].getElementsByTagName("td")[2];
-  date = new Date(/^([0-9\-\s\:]+UTC)/.exec(td.innerHTML)[0]);
-  td.innerHTML = date.toLocaleString();
-}
 </script>

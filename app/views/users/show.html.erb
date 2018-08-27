@@ -37,7 +37,7 @@
       <tbody>
         <% @operations.each do |operation| %>
           <tr>
-            <td><%= operation.date %></td>
+            <td><%= operation.date.iso8601 %></td>
             <td><%= operation.sum %></td>
           </tr>
         <% end %>
@@ -51,12 +51,6 @@
 Materialize.toast('<%= notice %>', 4000) // 4000 is the duration of the toast
 <% end %>
 
-for (i = 0; i < 5; i++) {
-  if (document.getElementById("h6_"+i)) {
-    date = new Date(/^([0-9\-\s\:]+UTC)/.exec(document.getElementById("h6_"+i).innerHTML)[0]);
-    document.getElementById("h6_"+i).innerHTML = date.toLocaleString() + /\s\:\s.*$/.exec(document.getElementById("h6_"+i).innerHTML)[0];
-  }
-}
 compte = <%= @user.amount %>
 data = new Array();
 table = document.getElementById("opTable");

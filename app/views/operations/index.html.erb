@@ -64,11 +64,6 @@ Materialize.toast('<%= notice %>', 4000) // 4000 is the duration of the toast
 
 table = document.getElementById("Table");
 tr = table.getElementsByTagName("tr");
-for (i = tr.length -1; i > 0; i--) {
-  td = tr[i].getElementsByTagName("td")[0];
-  date = new Date(/^([0-9\-\s\:]+UTC)/.exec(td.innerHTML)[0]);
-  td.innerHTML = date.toLocaleString();
-}
 
 $('a[rel=\'prev\']').innerHTML = "<"
 
