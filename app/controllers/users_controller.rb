@@ -10,13 +10,14 @@ class UsersController < ApplicationController
     @operationLastMouth = Hash.new {}
     @operationTotal = Hash.new {}
     @users.each do |user|
+      puts user.firstName
+      puts user.amount
       @operationTotal[user.id] = 0
       Operation.where(user_id: user.id).find_each do |operation|
         @operationTotal[user.id] = @operationTotal[user.id] + operation.sum
       end
-      @operationTotal[user.id] = @operationTotal[user.id] + user.initAmount
+      @operationTotal[user.id] = @operationTotal[user.id] + user.amount
       @totalAmount = @totalAmount + @operationTotal[user.id]
-      #User.find(user.id).update_attribute(:amount, @operationTotal[user.id])
       totalOperationLastMouth = 0
       Operation.where(user_id: user.id).where.not('numberDrink' => nil).where("created_at > ?", Date.today.last_month()).find_each do |operation|
         if operation.sum < 0
@@ -34,7 +35,7 @@ class UsersController < ApplicationController
   def show
     @operations = Operation.where(user_id: @user.id).order("date DESC")
     Operation.where(user_id: @user.id).find_each do |operation|
-      @user.amount = @user.initAmount + operation.sum
+      @user.amount = @user.amount + operation.sum
     end
   end
   
