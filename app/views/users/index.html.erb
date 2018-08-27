@@ -39,7 +39,7 @@
         <td><%= @users.find(key).alias %></td>
         <%
         warning=""
-        case @operationTotal[key] 
+        case @users.find(key).amount 
         when -50..-40
           td_class="orange-text text-darken-4"
         when -40..-30
@@ -51,15 +51,15 @@
         when -10..0
           td_class="orange-text"
         else
-          if @operationTotal[key] <= -50
+          if @users.find(key).amount <= -50
             td_class="red-text"
             warning='<a class="btn btn-floating pulse red"><i class="material-icons">warning</i></a>'
-          elsif @operationTotal[key] >= 50
+          elsif @users.find(key).amount >= 50
             td_class="green-text"
           end
         end
         %>
-        <td class="<%= td_class %>"><%= number_with_precision(@operationTotal[key], precision: 2).sub(/\.00$/,'') %>€  <%= warning.html_safe %></td>
+        <td class="<%= td_class %>"><%= number_with_precision(@users.find(key).amount, precision: 2).sub(/\.00$/,'') %>€  <%= warning.html_safe %></td>
         <td>
           <button class="btn-floating waves-effect green tooltipped" data-position="bottom" data-delay="1000" data-tooltip="Infos de <%= @users.find(key).firstName %>" onclick="window.location.href='/users/<%=@users.find(key).id%>'">
             <i class="material-icons">zoom_in</i>
