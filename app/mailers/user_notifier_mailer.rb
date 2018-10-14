@@ -21,9 +21,9 @@ class UserNotifierMailer < ApplicationMailer
     @user = user
     @lastSpending = Operation.where(user_id: @user.id).order(date: :desc).limit(10)
     @operations = Operation.where(user_id: @user.id).order("date DESC")
-    Operation.where(user_id: @user.id).find_each do |operation|
-      @user.amount = @user.amount + operation.sum
-    end
+    #Operation.where(user_id: @user.id).find_each do |operation|
+    #  @user.amount = @user.amount + operation.sum
+    #end
     mail( :to => @user.email,
     :subject => 'Compte bar en négatif !' )
   end
