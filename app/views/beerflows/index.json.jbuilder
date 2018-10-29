@@ -1,0 +1,1 @@
+json.array! @beerflows, partial: 'beerflows/beerflow', as: :beerflow

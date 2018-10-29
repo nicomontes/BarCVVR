@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :beerflows
+  mount ActionCable.server => '/cable'
   resources :kegs do
     member do
       get 'renew'

@@ -1,0 +1,2 @@
+module BeerflowsHelper
+end

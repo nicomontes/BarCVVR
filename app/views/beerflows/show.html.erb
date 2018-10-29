@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Quantity:</strong>
+  <%= @beerflow.quantity %>
+</p>
+
+<p>
+  <strong>Drink:</strong>
+  <%= @beerflow.drink %>
+</p>
+
+<%= link_to 'Edit', edit_beerflow_path(@beerflow) %> |
+<%= link_to 'Back', beerflows_path %>

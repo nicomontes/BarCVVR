@@ -1,10 +1,30 @@
 <% provide(:title, "BarCVVR") %>
 
 <div class="row">
-    <div class="col s12 m10 l7">
+  <div class="col s12 m10 l6">
     <%= image_tag "Header.svg" %>
-    </div>
   </div>
+  <div class="col s6 m6 l3">
+    <center>
+      <h5>Blonde</h5>
+      <h1 id='blonde' class="text-center" style="display: inline;vertical-align: middle;">0.000</h1>
+      <h1 id='blonde_quantity' class="text-center" style="display: none" hidden>0.000</h1>
+        <button class="btn-floating btn-large grey waves-effect waves-light tooltipped" data-position="right" data-delay="50" data-tooltip="RAZ Blonde" onclick="raz('blonde')" style="display: inline;">
+          <i class="material-icons">rotate_left</i>
+        </button>
+    </center>
+  </div>
+  <div class="col s6 m6 l3">
+    <center>
+      <h5>Spécial</h5>
+      <h1 id='special' class="text-center" style="display: inline;vertical-align: middle;">0.000</h1>
+      <h1 id='special_quantity' class="text-center" style="display: none" hidden>0.000</h1>
+        <button class="btn-floating btn-large grey waves-effect waves-light tooltipped" data-position="right" data-delay="50" data-tooltip="RAZ Spécial" onclick="raz('special')" style="display: inline;">
+          <i class="material-icons">rotate_left</i>
+        </button>
+    </center>
+  </div>
+</div>
 
 <div class="row">
   <div class="input-field col s6">
@@ -66,7 +86,7 @@
           </button>
         </td>
         <td>
-          <button class="btn-floating waves-effect amber tooltipped" data-position="bottom" data-delay="1000" data-tooltip="<%= @users.find(key).firstName %> Paye sa bière" onclick="window.location.href='/operations/new?userid=<%=@users.find(key).id%>'">
+          <button class="btn-floating waves-effect amber tooltipped" data-position="bottom" data-delay="1000" data-tooltip="<%= @users.find(key).firstName %> Paye sa bière" onclick="pay(<%=@users.find(key).id%>)">
             <%= image_tag "beer_glass.svg", height: "30", width: "30", style: 'margin-top: 5px' %>
           </button>
         </td>
@@ -212,4 +232,82 @@ function Search() {
     }
   }
 }
+
+App.beerflows = App.cable.subscriptions.create('BeerflowsChannel', {
+    /**
+     * Whenever this channel pushes content, it is received here
+     */
+    received: function(beerflow) {
+      console.log(beerflow)
+      if (beerflow.quantity == 0) {
+        beerflow.quantity = 0.000
+      }
+      if (beerflow.drink_id == 1) {
+        document.getElementById('blonde_quantity').innerHTML = parseFloat(beerflow.quantity)
+        price = 4 * parseFloat(beerflow.quantity) * <%= Drink.find(1).price.to_f %>
+        document.getElementById('blonde').innerHTML = parseFloat(price).toFixed(3)
+      } else if (beerflow.drink_id == 9) {
+        document.getElementById('special_quantity').innerHTML = parseFloat(beerflow.quantity)
+        price = 4 * parseFloat(beerflow.quantity) * <%= Drink.find(9).price.to_f %>
+        document.getElementById('special').innerHTML = parseFloat(price).toFixed(3)
+      }
+    }
+});
+
+function pay(user_id) {
+  if (document.getElementById('blonde').innerHTML == '0.000' && document.getElementById('special').innerHTML == '0.000') {
+    window.location.href='/operations/new?userid=' + user_id
+  }
+  else {
+    if (document.getElementById('blonde').innerHTML != '0.000') {
+      numberDrink = document.getElementById('blonde_quantity').innerHTML / 0.25
+      var date = new Date();
+      var month = date.getUTCMonth() + 1
+      var data = { 'operation':{'user_id':user_id,'numberDrink':numberDrink,'date(1i)': date.getUTCFullYear().toString(),'date(2i)': month.toString(),'date(3i)': date.getUTCDate().toString(),'date(4i)': date.getUTCHours().toString(),'date(5i)': date.getUTCMinutes().toString(),'date(6i)': date.getUTCSeconds().toString()}, 'post':{'drink':'1.0'} }
+      $.ajax({
+        type: "POST",
+        dataType: "script",
+        url: '/operations',
+        contentType: 'application/json',
+        data: JSON.stringify(data)
+      }).done(function( msg ){
+        document.getElementById('blonde_quantity').innerHTML = '0.000'
+      });
+      var url = '/beerflows/1';
+      var data = { beerflow:{quantity:0,drink_id:1}, _method:'put' }
+      $.ajax({
+        type: "PUT",
+        dataType: "script",
+        url: url,
+        contentType: 'application/json',
+        data: JSON.stringify(data)
+      }).done(function( msg ){});
+    }
+    if (document.getElementById('special').innerHTML != '0.000') {
+      numberDrink = document.getElementById('special_quantity').innerHTML / 0.25
+      var date = new Date(); 
+      var month = date.getUTCMonth() + 1
+      var data = { 'operation':{'user_id':user_id,'numberDrink':numberDrink,'date(1i)': date.getUTCFullYear().toString(),'date(2i)': month.toString(),'date(3i)': date.getUTCDate().toString(),'date(4i)': date.getUTCHours().toString(),'date(5i)': date.getUTCMinutes().toString(),'date(6i)': date.getUTCSeconds().toString()}, 'post':{'drink':'3.0'} }
+      $.ajax({
+        type: "POST",
+        dataType: "script",
+        url: '/operations',
+        contentType: 'application/json',
+        data: JSON.stringify(data)
+      }).done(function( msg ){
+        document.getElementById('special_quantity').innerHTML = '0.000'
+      });
+      var url = '/beerflows/2';
+      var data = { beerflow:{quantity:0.000,drink_id:3}, _method:'put' }
+      $.ajax({
+        type: "PUT",
+        dataType: "script",
+        url: url,
+        contentType: 'application/json',
+        data: JSON.stringify(data)
+      }).done(function( msg ){});
+    }
+  }
+}
+
 </script>
