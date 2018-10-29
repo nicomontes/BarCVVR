@@ -131,6 +131,7 @@ GEM
     rb-fsevent (0.9.8)
     rb-inotify (0.9.7)
       ffi (>= 0.5.0)
+    redis (3.3.5)
     ruby-progressbar (1.8.1)
     sass (3.4.22)
     sass-rails (5.0.6)
@@ -191,6 +192,7 @@ DEPENDENCIES
   pure-css-rails
   rails (~> 5.0.0)
   rails-controller-testing
+  redis (~> 3.0)
   sass-rails (~> 5.0)
   spring
   spring-watcher-listen (~> 2.0.0)
@@ -205,4 +207,4 @@ RUBY VERSION
    ruby 2.4.3p205
 
 BUNDLED WITH
-   1.16.1
+   1.17.1
