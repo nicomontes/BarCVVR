@@ -254,6 +254,26 @@ App.beerflows = App.cable.subscriptions.create('BeerflowsChannel', {
     }
 });
 
+$.getJSON('/beerflows/1.json', function(data) {
+  if (data.quantity == 0.0) {
+    data.quantity = 0.000
+  }
+  console.log(data.quantity)
+  document.getElementById('blonde_quantity').innerHTML = parseFloat(data.quantity)
+  price = 4 * parseFloat(data.quantity) * <%= Drink.find(1).price.to_f %>
+  document.getElementById('blonde').innerHTML = parseFloat(price).toFixed(3)
+});
+
+$.getJSON('/beerflows/2.json', function(data) {
+  if (data.quantity == 0.0) {
+    data.quantity = 0.000
+  }
+  console.log(data.quantity)
+  document.getElementById('special_quantity').innerHTML = parseFloat(data.quantity)
+  price = 4 * parseFloat(data.quantity) * <%= Drink.find(9).price.to_f %>
+  document.getElementById('special').innerHTML = parseFloat(price).toFixed(3)
+});
+
 function pay(user_id) {
   if (document.getElementById('blonde').innerHTML == '0.000' && document.getElementById('special').innerHTML == '0.000') {
     window.location.href='/operations/new?userid=' + user_id
