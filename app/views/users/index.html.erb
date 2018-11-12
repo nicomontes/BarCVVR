@@ -79,14 +79,14 @@
           end
         end
         %>
-        <td class="<%= td_class %>"><%= number_with_precision(@users.find(key).amount, precision: 2).sub(/\.00$/,'') %>€  <%= warning.html_safe %></td>
+        <td class="<%= td_class %>"><%= number_with_precision(@users.find(key).amount, precision: 3).sub(/\.00$/,'') %>€  <%= warning.html_safe %></td>
         <td>
           <button class="btn-floating waves-effect green tooltipped" data-position="bottom" data-delay="1000" data-tooltip="Infos de <%= @users.find(key).firstName %>" onclick="window.location.href='/users/<%=@users.find(key).id%>'">
             <i class="material-icons">zoom_in</i>
           </button>
         </td>
         <td>
-          <button class="btn-floating waves-effect amber tooltipped" data-position="bottom" data-delay="1000" data-tooltip="<%= @users.find(key).firstName %> Paye sa bière" onclick="pay(<%=@users.find(key).id%>)">
+          <button class="btn-floating waves-effect amber tooltipped" data-position="bottom" data-delay="1000" data-tooltip="<%= @users.find(key).firstName %> Paye sa bière" onclick="this.disabled=true;pay(<%=@users.find(key).id%>)">
             <%= image_tag "beer_glass.svg", height: "30", width: "30", style: 'margin-top: 5px' %>
           </button>
         </td>
