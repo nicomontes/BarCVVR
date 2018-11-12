@@ -38,7 +38,7 @@
         <% @operations.each do |operation| %>
           <tr>
             <td><%= operation.date.iso8601 %></td>
-            <td><%= operation.sum %></td>
+            <td><%= number_with_precision(operation.sum, precision: 3) %></td>
           </tr>
         <% end %>
       </tbody>
