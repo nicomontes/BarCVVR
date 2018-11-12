@@ -63,10 +63,11 @@ for (i = tr.length -1; tr[i]; i--) {
     dataTemp = new Object();
     dataTemp.date = date;
     if (i == tr.length -1) {
-        dataTemp.close = parseFloat(<%= @user.initAmount %>) + parseFloat(parseFloat(td1.innerHTML).toPrecision(3));
+        dataTemp.close = parseFloat(<%= @user.initAmount %>) + parseFloat(td1.innerHTML);
     } else {
-      dataTemp.close = data[data.length-1].close + parseFloat(parseFloat(td1.innerHTML).toPrecision(3));
+      dataTemp.close = data[data.length-1].close + parseFloat(td1.innerHTML);
     }
+    dataTemp.close = Math.round(dataTemp.close*1000)/1000;
     data.push(dataTemp);
     td.innerHTML = date.toLocaleString()
   }
