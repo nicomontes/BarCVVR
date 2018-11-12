@@ -57,7 +57,7 @@ table = document.getElementById("opTable");
 tr = table.getElementsByTagName("tr");
 for (i = tr.length -1; tr[i]; i--) {
   td = tr[i].getElementsByTagName("td")[0];
-  td1 = tr[i].getElementsByTagName("td")[1].toPrecision(3);
+  td1 = parseFloat(tr[i].getElementsByTagName("td")[1]).toPrecision(3);
   if (td) {
     date = new Date(td.innerHTML);
     dataTemp = new Object();
