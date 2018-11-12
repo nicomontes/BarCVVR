@@ -67,7 +67,6 @@ for (i = tr.length -1; tr[i]; i--) {
     } else {
       dataTemp.close = data[data.length-1].close + parseFloat(td1.innerHTML);
     }
-    dataTemp.close = dataTemp.close.toFixed(3);
     data.push(dataTemp);
     td.innerHTML = date.toLocaleString()
   }
