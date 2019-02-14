@@ -47,6 +47,8 @@ class BeerflowsController < ApplicationController
         total = Beerflow.where(:id => params[:id]).first[:quantity].to_f + beerflow_params[:quantity].to_f
         beerflow[:quantity] = total
         puts beerflow[:quantity]
+      else
+        beerflow[:quantity] = 0
       end
 
       if @beerflow.update(beerflow)
