@@ -52,11 +52,11 @@ class BeerflowsController < ApplicationController
       end
 
       if @beerflow.update(beerflow)
-        format.html { redirect_to @beerflow, notice: 'Beerflow was successfully updated.' }
-        format.json { render :show, status: :ok, location: @beerflow }
+        #format.html { redirect_to @beerflow, notice: 'Beerflow was successfully updated.' }
+        #format.json { render :show, status: :ok, location: @beerflow }
       else
-        format.html { render :edit }
-        format.json { render json: @beerflow.errors, status: :unprocessable_entity }
+        #format.html { render :edit }
+        #format.json { render json: @beerflow.errors, status: :unprocessable_entity }
       end
     end
   end
