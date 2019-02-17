@@ -11,7 +11,7 @@ function raz(drink) {
   }
   else if (drink == 'special') {
     var url = "/beerflows/2";
-    var data = { beerflow:{quantity:0.000,drink_id:9}, _method:'put' }
+    var data = { beerflow:{quantity:0,drink_id:9}, _method:'put' }
   }
 
   $.ajax({
@@ -19,6 +19,9 @@ function raz(drink) {
     dataType: "script",
     url: url,
     contentType: 'application/json',
-    data: JSON.stringify(data)
+    data: JSON.stringify(data),
+    success: function (data) {
+            console.log('OK');
+        }
 }).done(function( msg ){});
 }
