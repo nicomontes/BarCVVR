@@ -31,7 +31,7 @@ gem "pure-css-rails"
 # Use whenever to send email evry month
 gem 'whenever', :require => false
 # Pagination
-gem 'will_paginate', '3.1.5'
+gem 'will_paginate', '3.1.7'
 gem 'bootstrap-will_paginate', '1.0.0'
 gem 'materialize-sass'
 
