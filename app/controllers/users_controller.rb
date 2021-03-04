@@ -26,9 +26,9 @@ class UsersController < ApplicationController
   # GET /users/1.json
   def show
     @operations = Operation.where(user_id: @user.id).order("date DESC")
-    Operation.where(user_id: @user.id).find_each do |operation|
-      @user.amount = @user.amount + operation.sum
-    end
+    #Operation.where(user_id: @user.id).find_each do |operation|
+    #  @user.amount = @user.amount + operation.sum
+    #end
   end
   
   # GET /users/1/lost
