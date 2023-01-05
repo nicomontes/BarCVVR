@@ -52,14 +52,15 @@
   <tbody>
     <% i = 1 %>
     <% @operationLastMouth.each do |key, value| %>
+      <%= running_user = @users.find(key) %>
       <tr>
         <td><%= i %></td>
-        <td><%= @users.find(key).lastName %></td>
-        <td><%= @users.find(key).firstName %></td>
-        <td><%= @users.find(key).alias %></td>
+        <td><%= running_user.lastName %></td>
+        <td><%= running_user.firstName %></td>
+        <td><%= running_user.alias %></td>
         <%
         warning=""
-        case @users.find(key).amount 
+        case running_user.amount 
         when -50..-40
           td_class="orange-text text-darken-4"
         when -40..-30
@@ -71,32 +72,32 @@
         when -10..0
           td_class="orange-text"
         else
-          if @users.find(key).amount <= -50
+          if running_user.amount <= -50
             td_class="red-text"
             warning='<a class="btn btn-floating pulse red"><i class="material-icons">warning</i></a>'
-          elsif @users.find(key).amount >= 50
+          elsif running_user.amount >= 50
             td_class="green-text"
           end
         end
         %>
-        <td class="<%= td_class %>"><%= number_with_precision(@users.find(key).amount, precision: 3).sub(/\.00$/,'') %>€  <%= warning.html_safe %></td>
+        <td class="<%= td_class %>"><%= number_with_precision(running_user.amount, precision: 3).sub(/\.00$/,'') %>€  <%= warning.html_safe %></td>
         <td>
-          <button class="btn-floating waves-effect green tooltipped" data-position="bottom" data-delay="1000" data-tooltip="Infos de <%= @users.find(key).firstName %>" onclick="window.location.href='/users/<%=@users.find(key).id%>'">
+          <button class="btn-floating waves-effect green tooltipped" data-position="bottom" data-delay="1000" data-tooltip="Infos de <%= running_user.firstName %>" onclick="window.location.href='/users/<%=running_user.id%>'">
             <i class="material-icons">zoom_in</i>
           </button>
         </td>
         <td>
-          <button class="btn-floating waves-effect amber tooltipped" data-position="bottom" data-delay="1000" data-tooltip="<%= @users.find(key).firstName %> Paye sa bière" onclick="this.disabled=true;pay(<%=@users.find(key).id%>)">
+          <button class="btn-floating waves-effect amber tooltipped" data-position="bottom" data-delay="1000" data-tooltip="<%= running_user.firstName %> Paye sa bière" onclick="this.disabled=true;pay(<%=running_user.id%>)">
             <%= image_tag "beer_glass.svg", height: "30", width: "30", style: 'margin-top: 5px' %>
           </button>
         </td>
         <td>
-          <button class="btn-floating waves-effect light-blue tooltipped" data-position="bottom" data-delay="1000" data-tooltip="Renflouer <%= @users.find(key).firstName %>" onclick="window.location.href='/operations/add?userid=<%=@users.find(key).id%>'">
+          <button class="btn-floating waves-effect light-blue tooltipped" data-position="bottom" data-delay="1000" data-tooltip="Renflouer <%= running_user.firstName %>" onclick="window.location.href='/operations/add?userid=<%=running_user.id%>'">
             <i class="material-icons">euro_symbol</i>
           </button>
         </td>
         <td>
-          <button class="btn-floating waves-effect red tooltipped" data-position="bottom" data-delay="1000" data-tooltip="Echange <%= @users.find(key).firstName %>" onclick="window.location.href='/operations/exchange?userid=<%=@users.find(key).id%>'">
+          <button class="btn-floating waves-effect red tooltipped" data-position="bottom" data-delay="1000" data-tooltip="Echange <%= running_user.firstName %>" onclick="window.location.href='/operations/exchange?userid=<%=running_user.id%>'">
             <i class="material-icons">compare_arrows</i>
           </button>
         </td>
