@@ -56,6 +56,8 @@ loop.close()
 GPIO.cleanup()
 ```
 
+
+ESP32  
 ```c++
 #include <WiFi.h>
 #include <HTTPClient.h>
